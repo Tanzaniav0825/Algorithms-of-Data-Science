@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+pydantic
+httpx
+prometheus-client
+opentelemetry-sdk
+redis
+numpy
+scikit-learn
+torch
+transformers
+gradio
+huggingface_hub
+pytest
+locust
+ruff
+black
