@@ -1,62 +1,270 @@
-import json
-from pathlib import Path
 from typing import List, Dict, Any
 
-# This file lives in the repo root, so data/ is a sibling directory.
-DATA_DIR = Path(__file__).resolve().parent / "data"
-PERSONA_FILE = DATA_DIR / "personas.json"
-
-REQUIRED_FIELDS = [
-    "id",
-    "name",
-    "tech_skill_level",
-    "usage_context",
-    "goals",
-    "frustrations",
-    "scenario_tags",
+# In-code persona database to avoid file path issues in deployment.
+PERSONAS: List[Dict[str, Any]] = [
+    {
+        "id": "tech_savvy_power_user",
+        "name": "Jordan (Tech-Savvy PM)",
+        "role": "Product Manager",
+        "demographics": {
+            "age_range": "30-40",
+            "location": "Urban, US",
+            "family_status": "Single"
+        },
+        "tech_skill_level": "advanced",
+        "usage_context": "Uses the app daily at work to coordinate feature launches and share updates with the team.",
+        "goals": [
+            "Share content with the team as fast as possible",
+            "Avoid friction in daily workflows",
+            "Get quick visual confirmation that things were shared"
+        ],
+        "frustrations": [
+            "Slow UI or extra clicks",
+            "Unclear icons or labels",
+            "Hidden privacy toggles"
+        ],
+        "behavior_style": {
+            "tone": "direct, analytical",
+            "risk_attitude": "low tolerance for downtime",
+            "feedback_depth": "detailed and structured"
+        },
+        "channels": ["web", "mobile"],
+        "scenario_tags": ["quick_share", "productivity", "team_collaboration"],
+        "constraints": [
+            "Needs clear audit trail of what was shared and when"
+        ]
+    },
+    {
+        "id": "busy_parent_casual",
+        "name": "Riley (Busy Parent)",
+        "role": "Caregiver",
+        "demographics": {
+            "age_range": "35-45",
+            "location": "Suburban, US",
+            "family_status": "Two kids under 10"
+        },
+        "tech_skill_level": "beginner",
+        "usage_context": "Uses the app in short bursts on mobile in the evenings and weekends.",
+        "goals": [
+            "Quickly share photos and updates with family",
+            "Avoid complicated settings",
+            "Keep everything kid-safe"
+        ],
+        "frustrations": [
+            "Long onboarding flows",
+            "Too many notifications",
+            "Tiny text and low contrast"
+        ],
+        "behavior_style": {
+            "tone": "warm, practical",
+            "risk_attitude": "cautious about kids' privacy",
+            "feedback_depth": "medium depth, focused on convenience"
+        },
+        "channels": ["mobile"],
+        "scenario_tags": ["onboarding_tooltip", "notifications", "family_sharing"],
+        "constraints": [
+            "Frequently interrupted while using the app",
+            "Prefers one-tap actions"
+        ]
+    },
+    {
+        "id": "privacy_focused_professional",
+        "name": "Sam (Privacy-Focused Lawyer)",
+        "role": "Legal Counsel",
+        "demographics": {
+            "age_range": "40-50",
+            "location": "Urban, EU",
+            "family_status": "Married, no kids"
+        },
+        "tech_skill_level": "intermediate",
+        "usage_context": "Uses the app to review documents and share sensitive content with clients.",
+        "goals": [
+            "Avoid accidental data leaks",
+            "Understand exactly who can see shared content",
+            "Ensure compliance with regulations"
+        ],
+        "frustrations": [
+            "Ambiguous privacy labels",
+            "Auto-sharing defaults",
+            "Dark-pattern prompts"
+        ],
+        "behavior_style": {
+            "tone": "formal, precise",
+            "risk_attitude": "very risk-averse",
+            "feedback_depth": "deep, focused on edge cases"
+        },
+        "channels": ["web"],
+        "scenario_tags": ["quick_share", "permissions", "access_control"],
+        "constraints": [
+            "Must comply with strict confidentiality rules"
+        ]
+    },
+    {
+        "id": "accessibility_first_user",
+        "name": "Avery (Accessibility Advocate)",
+        "role": "UX Researcher",
+        "demographics": {
+            "age_range": "25-35",
+            "location": "Urban, US",
+            "family_status": "Single"
+        },
+        "tech_skill_level": "advanced",
+        "usage_context": "Uses the app daily with assistive technologies such as screen readers and keyboard navigation.",
+        "goals": [
+            "Complete tasks without visual-only cues",
+            "Access all features via keyboard and screen reader",
+            "Promote inclusive design"
+        ],
+        "frustrations": [
+            "Missing alt text",
+            "Unlabeled buttons",
+            "Poor contrast and tiny touch targets"
+        ],
+        "behavior_style": {
+            "tone": "constructive, advocacy-oriented",
+            "risk_attitude": "medium",
+            "feedback_depth": "very detailed on accessibility impacts"
+        },
+        "channels": ["web"],
+        "scenario_tags": ["onboarding_tooltip", "settings", "accessibility"],
+        "constraints": [
+            "Relies heavily on screen reader feedback",
+            "Avoids mouse-only interactions"
+        ]
+    },
+    {
+        "id": "social_super_user",
+        "name": "Mia (Social Power User)",
+        "role": "Content Creator",
+        "demographics": {
+            "age_range": "18-28",
+            "location": "Global, often traveling",
+            "family_status": "Single"
+        },
+        "tech_skill_level": "advanced",
+        "usage_context": "Uses the app multiple times a day to share content with followers and friends.",
+        "goals": [
+            "Maximize engagement on posts",
+            "Easily cross-post to multiple platforms",
+            "Get quick stats and reactions"
+        ],
+        "frustrations": [
+            "Rate limits with no explanation",
+            "Inconsistent share previews",
+            "Delayed notifications"
+        ],
+        "behavior_style": {
+            "tone": "casual, expressive",
+            "risk_attitude": "willing to experiment",
+            "feedback_depth": "high when it affects reach"
+        },
+        "channels": ["mobile", "web"],
+        "scenario_tags": ["quick_share", "analytics", "notifications"],
+        "constraints": [
+            "Time-sensitive posting windows"
+        ]
+    },
+    {
+        "id": "low_bandwidth_user",
+        "name": "Diego (Low Connectivity User)",
+        "role": "Field Worker",
+        "demographics": {
+            "age_range": "25-40",
+            "location": "Rural, South America",
+            "family_status": "Married"
+        },
+        "tech_skill_level": "intermediate",
+        "usage_context": "Uses the app in areas with poor connectivity, mostly on a low-end Android phone.",
+        "goals": [
+            "Share updates even with weak signal",
+            "Avoid losing unsent content",
+            "Use as little data as possible"
+        ],
+        "frustrations": [
+            "Infinite spinners with no offline support",
+            "Large image uploads failing silently",
+            "Features that assume fast Wi-Fi"
+        ],
+        "behavior_style": {
+            "tone": "pragmatic, concise",
+            "risk_attitude": "cautious about wasting time",
+            "feedback_depth": "medium, very context-specific"
+        },
+        "channels": ["mobile"],
+        "scenario_tags": ["offline_mode", "quick_share"],
+        "constraints": [
+            "Limited data plan and battery",
+            "Works in noisy environments"
+        ]
+    },
+    {
+        "id": "new_to_tech_senior",
+        "name": "Evelyn (New Tech Senior)",
+        "role": "Retired Teacher",
+        "demographics": {
+            "age_range": "65-75",
+            "location": "Suburban, US",
+            "family_status": "Widowed, many grandchildren"
+        },
+        "tech_skill_level": "beginner",
+        "usage_context": "Uses the app mainly to keep in touch with family and receive photos.",
+        "goals": [
+            "Easily see photos and messages",
+            "Avoid making mistakes when pressing buttons",
+            "Feel confident using the app alone"
+        ],
+        "frustrations": [
+            "Tiny fonts and complex menus",
+            "Jargon or slang in labels",
+            "Overwhelming first-time setup"
+        ],
+        "behavior_style": {
+            "tone": "polite, hesitant",
+            "risk_attitude": "very cautious",
+            "feedback_depth": "short, focused on confusion points"
+        },
+        "channels": ["tablet"],
+        "scenario_tags": ["onboarding_tooltip", "accessibility"],
+        "constraints": [
+            "Mild vision and dexterity limitations"
+        ]
+    },
+    {
+        "id": "security_engineer_paranoid",
+        "name": "Noah (Security Engineer)",
+        "role": "Security Engineer",
+        "demographics": {
+            "age_range": "30-40",
+            "location": "Urban, US",
+            "family_status": "In a relationship"
+        },
+        "tech_skill_level": "expert",
+        "usage_context": "Uses the app to test integrations and occasionally for personal communication.",
+        "goals": [
+            "Understand exactly what happens to shared data",
+            "Verify encryption and storage practices",
+            "Avoid any unnecessary data collection"
+        ],
+        "frustrations": [
+            "Opaque data policies",
+            "In-app trackers and third-party scripts",
+            "Features enabled without explicit consent"
+        ],
+        "behavior_style": {
+            "tone": "skeptical, technical",
+            "risk_attitude": "paranoid about security",
+            "feedback_depth": "very deep on security behaviors"
+        },
+        "channels": ["web"],
+        "scenario_tags": ["permissions", "quick_share", "settings"],
+        "constraints": [
+            "Blocks many trackers at browser level"
+        ]
+    }
 ]
 
 
-def _validate_persona(p: Dict[str, Any]) -> None:
-    """Basic validation to ensure personas are usable and consistent."""
-    missing = [f for f in REQUIRED_FIELDS if f not in p or not p[f]]
-    if missing:
-        raise ValueError(
-            f"Persona {p.get('id', p.get('name', 'UNKNOWN'))} missing fields: {missing}"
-        )
-
-    if p["tech_skill_level"] not in {"beginner", "intermediate", "advanced", "expert"}:
-        raise ValueError(
-            f"Persona {p['id']} has invalid tech_skill_level={p['tech_skill_level']}"
-        )
-
-    if not isinstance(p["goals"], list) or not isinstance(p["frustrations"], list):
-        raise ValueError(
-            f"Persona {p['id']} must have list fields for goals and frustrations."
-        )
-
-    if not isinstance(p["scenario_tags"], list) or not p["scenario_tags"]:
-        raise ValueError(
-            f"Persona {p['id']} must have at least one scenario_tag."
-        )
-
-
 def load_personas() -> List[Dict[str, Any]]:
-    """
-    Load personas from data/personas.json and validate them.
-    Raises a clear error if the file is missing or invalid.
-    """
-    if not PERSONA_FILE.exists():
-        raise FileNotFoundError(f"Persona file not found: {PERSONA_FILE}")
-
-    with PERSONA_FILE.open("r", encoding="utf-8") as f:
-        personas = json.load(f)
-
-    if not isinstance(personas, list):
-        raise ValueError("personas.json must contain a JSON array of persona objects.")
-
-    for p in personas:
-        _validate_persona(p)
-
-    return personas
+    """Return the in-code persona database."""
+    return PERSONAS
 
