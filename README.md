@@ -147,4 +147,3 @@ Master’s in Data Science — Pace University
 AI | Machine Learning | UX Simulation | Product Analytics
 GitHub: https://github.com/Tanzaniav0825
 LinkedIn: https://www.linkedin.com/in/tanzania-vernon-0a0a14343
-
