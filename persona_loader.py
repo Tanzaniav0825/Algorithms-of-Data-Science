@@ -267,4 +267,3 @@ PERSONAS: List[Dict[str, Any]] = [
 def load_personas() -> List[Dict[str, Any]]:
     """Return the in-code persona database."""
     return PERSONAS
-

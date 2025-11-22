@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 streamlit
 pandas
 git+https://github.com/microsoft/TinyTroupe.git@main
 openai
+=======
+streamlit
+>>>>>>> 6441a27 (Clean file structure: moved files to root, updated imports, removed app folder)
