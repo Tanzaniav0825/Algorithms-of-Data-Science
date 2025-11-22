@@ -1,0 +1,4 @@
+streamlit
+pandas
+git+https://github.com/microsoft/TinyTroupe.git@main
+openai
